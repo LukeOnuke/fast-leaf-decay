@@ -1,0 +1,4 @@
+name: fast-leaf-decay
+version: '${project.version}'
+main: com.lukeonuke.fastleafdecay.FastLeafDecay
+api-version: '1.20'
