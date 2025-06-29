@@ -1,6 +1,7 @@
 package com.lukeonuke.fastleafdecay.event;
 
 import com.lukeonuke.fastleafdecay.FastLeafDecay;
+import com.lukeonuke.fastleafdecay.service.TaxicabDistanceService;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Tag;
@@ -29,33 +30,38 @@ public class BlockBreakEventListener implements Listener {
         final Block block = event.getBlock();
 
         if (Tag.LEAVES.isTagged(block.getType())) {
-            breakLeaf(block, isValidLeaf(block));
+            breakLeaf(block, isValidLeaf(block), block);
         }
 
         if (Tag.LOGS.isTagged(block.getType())) {
-            breakLeaf(block, false);
+            breakLeaf(block, false, block);
         }
     }
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onLeavesDecay(LeavesDecayEvent event) {
-        breakLeaf(event.getBlock(), isValidLeaf(event.getBlock()));
+        breakLeaf(event.getBlock(), isValidLeaf(event.getBlock(), event.getBlock()), event.getBlock());
     }
 
-    public void breakLeaf(Block block, boolean breakFirstBlock) {
+    public void breakLeaf(Block block, boolean breakFirstBlock, Block originalBlock) {
         if(breakFirstBlock) block.breakNaturally();
 
         neighbours.forEach(neighbour -> {
             Block neighbourBlock = block.getRelative(neighbour);
-            if(!isValidLeaf(neighbourBlock)) return;
-            breakLeaf(neighbourBlock, true);
+            if(!isValidLeaf(neighbourBlock, originalBlock)) return;
+            breakLeaf(neighbourBlock, true, block);
         });
     }
 
-    boolean isValidLeaf(Block block){
+    private boolean isValidLeaf(Block block, Block originalBlock){
         if(!(block.getBlockData() instanceof Leaves leafBlock)) return false;
         if(leafBlock.getDistance() < 7) return false;
         if(leafBlock.isPersistent()) return false;
+        if(TaxicabDistanceService.distance(block, originalBlock) > 35) return false;
         return true;
+    }
+
+    private boolean isValidLeaf(Block block){
+        return isValidLeaf(block, block);
     }
 }
