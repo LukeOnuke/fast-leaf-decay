@@ -57,8 +57,7 @@ public class BlockBreakEventListener implements Listener {
         if(!(block.getBlockData() instanceof Leaves leafBlock)) return false;
         if(leafBlock.getDistance() < 7) return false;
         if(leafBlock.isPersistent()) return false;
-        if(TaxicabDistanceService.distance(block, originalBlock) > 35) return false;
-        return true;
+        return TaxicabDistanceService.distance(block, originalBlock) <= 35;
     }
 
     private boolean isValidLeaf(Block block){
