@@ -1,0 +1,13 @@
+# Fast leaf decay config, 15.08.2025
+
+# Exploit prevention being enabled prevents a rare exploit that can happen when
+# there are many connected leaves. The exploit causes slight but noticeable
+# lag.
+# How it works: Checks a taxicab distance between the block that started the
+# leaf decay and the current leaf being decayed, if its over 35 it cancels the
+# breaking of that leaf.
+#
+# WARNING: It is known to break the mechanism of fast leaf decay in some server
+# configurations!
+# REFER TO: https://github.com/LukeOnuke/fast-leaf-decay/issues/1
+exploitPrevention: false

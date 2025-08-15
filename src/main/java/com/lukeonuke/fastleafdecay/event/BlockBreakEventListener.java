@@ -1,6 +1,7 @@
 package com.lukeonuke.fastleafdecay.event;
 
 import com.lukeonuke.fastleafdecay.FastLeafDecay;
+import com.lukeonuke.fastleafdecay.service.ConfigurationService;
 import com.lukeonuke.fastleafdecay.service.TaxicabDistanceService;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -19,7 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BlockBreakEventListener implements Listener {
-    ArrayList<BlockFace> neighbours = new ArrayList<>(List.of(BlockFace.values()));
+    final ArrayList<BlockFace> neighbours = new ArrayList<>(List.of(BlockFace.values()));
+    final ConfigurationService cs = ConfigurationService.getInstance();
 
     public BlockBreakEventListener() {
         neighbours.remove(BlockFace.SELF);
@@ -57,7 +59,12 @@ public class BlockBreakEventListener implements Listener {
         if(!(block.getBlockData() instanceof Leaves leafBlock)) return false;
         if(leafBlock.getDistance() < 7) return false;
         if(leafBlock.isPersistent()) return false;
-        return TaxicabDistanceService.distance(block, originalBlock) <= 35;
+
+        if(cs.isExploitPrevention()) {
+            return TaxicabDistanceService.distance(block, originalBlock) < 35;
+        }
+
+        return true;
     }
 
     private boolean isValidLeaf(Block block){
