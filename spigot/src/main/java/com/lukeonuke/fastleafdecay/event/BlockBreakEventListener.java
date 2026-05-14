@@ -1,10 +1,8 @@
 package com.lukeonuke.fastleafdecay.event;
 
-import com.lukeonuke.fastleafdecay.FastLeafDecay;
 import com.lukeonuke.fastleafdecay.service.ConfigurationService;
 import com.lukeonuke.fastleafdecay.service.TaxicabDistanceService;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
+
 import org.bukkit.Tag;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
