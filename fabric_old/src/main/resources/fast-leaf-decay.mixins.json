@@ -1,0 +1,14 @@
+{
+	"required": true,
+	"package": "com.lukeonuke.fastleafdecay.mixin",
+	"compatibilityLevel": "JAVA_21",
+	"mixins": [
+		"ServerLevelMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	},
+	"overwrites": {
+		"requireAnnotations": true
+	}
+}
